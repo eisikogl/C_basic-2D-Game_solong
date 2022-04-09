@@ -42,6 +42,9 @@ typedef struct s_gamedata
     int current_x;
     int current_y;
 
+    int map_coordinates_i;
+    int map_coordinates_j;
+
     int line_count;
     int line_size;
 
