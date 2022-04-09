@@ -121,6 +121,48 @@ char	**ft_split(const char *s, char c)
 //SOOOOOOO_LONG
 //
 //
+// void set_game_assets(t_gamedata *gamedata)
+// {
+// 	void *wall_image;
+
+// 	gamedata->wall_path = "./assets/walls/wall1.xpm";
+// }
+
+int get_line_count(t_gamedata *gamedata)
+{
+	char c;
+	int line_count;
+    int fd;
+
+    fd = open(gamedata->map_destination, O_RDONLY);
+	line_count = 0;
+	while(read(fd, &c, 1))
+	{
+		if (c == '\n')
+			line_count++;
+	}
+    close(fd);
+	return line_count + 1;
+}
+
+int get_line_size(t_gamedata *gamedata)
+{
+	char c;
+	int line_size;
+    int fd;
+
+    fd = open(gamedata->map_destination, O_RDONLY);
+	line_size = 0;
+	while(read(fd, &c, 1))
+	{
+		if (c == '\n')
+			break ;
+		line_size++;
+	}
+    close(fd);
+	return line_size;
+}
+
 int get_file_length(t_gamedata *gamedata)
 {
 	char c;
@@ -129,84 +171,168 @@ int get_file_length(t_gamedata *gamedata)
 
     fd = open(gamedata->map_destination, O_RDONLY);
 	while(read(fd, &c, 1))
+	{
 		i++;
+	}
     close(fd);
 	return i;
 }
 
-void read_map(t_gamedata *gamedata)
-{
-    int file_length;
-    char **map;
-    int fd;
-    
-    file_length = get_file_length(gamedata);
-    map = (char **)malloc(file_length + 1);
-    
-    fd = open(gamedata->map_destination, O_RDONLY);
-    read(fd, map, file_length);
-    map[file_length + 1] = '\0';
-    gamedata->map = ft_split(map, '\n');
-    
-    int i = 0;
-	while (i < 4)
-	{
-		printf("string %d : %s\n", i, map[i]);
-		i++;
-	}
-    close(fd);
-}
-
-void create_wall(t_gamedata *gamedata, int x, int y)
+void instantiate_wall(t_gamedata *gamedata, int x, int y)
 {
 	void	*img;
-	char	*relative_path = "./assets/walls/wall1.xpm";
-
-	img = mlx_xpm_file_to_image(gamedata->mlx, relative_path, &gamedata->image_size, &gamedata->image_size);
+	
+	gamedata->wall_path = "./assets/walls/wall2.xpm";
+	img = mlx_xpm_file_to_image(gamedata->mlx, gamedata->wall_path, &gamedata->image_size, &gamedata->image_size);
     mlx_put_image_to_window(gamedata->mlx, gamedata->mlx_window, img, x, y);
+}
+
+void instantiate_collectible(t_gamedata *gamedata, int x, int y)
+{
+	void	*img;
+	
+	gamedata->wall_path = "./assets/collectibles/collectible1.xpm";
+	img = mlx_xpm_file_to_image(gamedata->mlx, gamedata->wall_path, &gamedata->image_size, &gamedata->image_size);
+    mlx_put_image_to_window(gamedata->mlx, gamedata->mlx_window, img, x, y);
+}
+
+void instantiate_exit(t_gamedata *gamedata, int x, int y)
+{
+	void	*img;
+	
+	gamedata->wall_path = "./assets/exits/exit1.xpm";
+	img = mlx_xpm_file_to_image(gamedata->mlx, gamedata->wall_path, &gamedata->image_size, &gamedata->image_size);
+    mlx_put_image_to_window(gamedata->mlx, gamedata->mlx_window, img, x, y);
+}
+
+void instantiate_player(t_gamedata *gamedata, int x, int y)
+{
+	void	*img;
+	
+	gamedata->wall_path = "./assets/player/player_down.xpm";
+	img = mlx_xpm_file_to_image(gamedata->mlx, gamedata->wall_path, &gamedata->image_size, &gamedata->image_size);
+    mlx_put_image_to_window(gamedata->mlx, gamedata->mlx_window, img, x, y);
+}
+
+void instantiate_world(t_gamedata *gamedata, int x, int y, char object)
+{
+	if (object == '1')
+		instantiate_wall(gamedata, x, y);
+	if (object == 'P')
+	{
+		instantiate_player(gamedata, x, y);
+	}
+	if (object == 'C')
+		instantiate_collectible(gamedata, x, y);
+	if (object == 'E')
+		instantiate_exit(gamedata, x, y);
+}
+
+void read_map(t_gamedata *gamedata)
+{
+    int fd;
+    int file_length;
+    char *map;
+    
+    file_length = get_file_length(gamedata);
+    map = (char *)malloc(file_length + 1);
+    fd = open(gamedata->map_destination, O_RDONLY);
+    read(fd, map, file_length);
+    gamedata->map = ft_split(map, '\n');
+
+    close(fd);
+	free(map);
 }
 
 void render_map(t_gamedata *gamedata)
 {
     read_map(gamedata);
-    // int i = 0;
-    // int j = 0;
-    // int x;
-    // int y;
 
-    // x = 0;
-    // y = 0;
-    // while (gamedata->map[i])
-    // {
-    //     // while (gamedata->map[i][j])
-    //     // {
-    //     //     printf("%c", gamedata->map[i][j]);
-    //     //     //create_wall(gamedata, x, y);
-    //     //     i++;
-    //     // }
-    //     printf("%c", gamedata->map[i][j]);
-    //     x += 16;
-    //     i++;
-    // }
+	int i = 0;
+	int j;
+
+	int x;
+    int y;
+
+	x = 0;
+    y = 0;
+	while (gamedata -> map[i])
+	{
+		j = 0;
+		x = 0;
+		while (gamedata -> map[i][j])
+		{
+			instantiate_world(gamedata, x, y, gamedata -> map[i][j]);
+			if (gamedata -> map[i][j] == 'P')
+			{
+				gamedata->current_x = i;
+				gamedata->current_y = j;
+			} 
+			x += 64;
+			j++;
+		}
+	    y += 64;
+		printf("\n");
+		i++;
+	}
 }
+
+// void player_movement(t_gamedata *gamedata)
+// {
+
+// }
+// void player_move_up(t_gamedata *gamedata)
+// {
+// 	gamedata->map[gamedata->current_x, gamedata->current_y - 1];
+// }
+
+// void player_move_down(t_gamedata *gamedata)
+// {
+// 	gamedata->map[gamedata->current_x, gamedata->current_y + 1];
+// }
+
+// void player_move_left(t_gamedata *gamedata)
+// {
+// 	gamedata->map[gamedata->current_x - 1, gamedata->current_y];
+// }
+
+// void player_move_right(t_gamedata *gamedata)
+// {
+// 	gamedata->map[gamedata->current_x + 1, gamedata->current_y];
+// }
+
+int key_event(int key, t_gamedata *gamedata)
+{
+	if (key == W)
+	{
+		//move player up
+		//player_move_right(gamedata);
+		
+		render_map(gamedata);
+	}
+	printf("aa");
+	return 0;
+}
+
 
 int main()
 {
-    t_gamedata *gamedata;
-    gamedata = malloc(sizeof(t_gamedata));
-    void *mlx;
+	void *mlx;
     void *mlx_window;
 
     mlx = mlx_init();
-    gamedata->mlx = mlx;
-    gamedata->game_name = "so_long";
-    gamedata->map_destination = "./maps/map1.ber";
+	
+    t_gamedata *gamedata;
+    gamedata = malloc(sizeof(t_gamedata));
 
-    mlx_window = mlx_new_window(mlx, 1920, 1080, gamedata->game_name);
-    gamedata->mlx_window = mlx_window;
-    //render_map(gamedata);
-    mlx_loop(mlx);
-    
-    //printf("%s", gamedata->map);
+	gamedata->map_destination = "./maps/map2.ber";
+	gamedata->mlx = mlx;
+	gamedata->window_width = 64 * get_line_size(gamedata);
+	gamedata->window_height = 64 * get_line_count(gamedata);
+	mlx_window = mlx_new_window(gamedata->mlx, gamedata->window_width, gamedata->window_height, "a");
+	gamedata->mlx_window = mlx_window;
+	render_map(gamedata);
+	mlx_hook(gamedata->mlx_window, 2, 1L << 0, key_event, gamedata);
+	mlx_loop(mlx);
     return 0;
 }
