@@ -182,7 +182,7 @@ void instantiate_wall(t_gamedata *gamedata, int x, int y)
 void instantiate_collectible(t_gamedata *gamedata, int x, int y)
 {
 	void	*img;
-	char *path;
+	char 	*path;
 
 	path = "./assets/collectibles/collectible1.xpm";
 	img = mlx_xpm_file_to_image(gamedata->mlx, path, &gamedata->image_size, &gamedata->image_size);
@@ -193,7 +193,7 @@ void instantiate_collectible(t_gamedata *gamedata, int x, int y)
 void instantiate_exit(t_gamedata *gamedata, int x, int y)
 {
 	void	*img;
-	char *path;
+	char	*path;
 
 	path = "./assets/exits/exit1.xpm";
 	img = mlx_xpm_file_to_image(gamedata->mlx, path, &gamedata->image_size, &gamedata->image_size);
@@ -203,7 +203,7 @@ void instantiate_exit(t_gamedata *gamedata, int x, int y)
 
 void get_object_path(t_gamedata *gamedata)
 {
-	char *path;
+	char	*path;
 
 	if (gamedata->current_direction == 'W')
 		path = "./assets/player/player_up.xpm";
@@ -277,7 +277,6 @@ void get_initial_informations(t_gamedata *gamedata)
 			{
 				gamedata->collectible_size += 1;
 			}
-			
 			j++;
 		}
 		i++;
@@ -303,12 +302,12 @@ void read_map(t_gamedata *gamedata)
 
 void render_map(t_gamedata *gamedata)
 {
-	int i = 0;
+	int i;
 	int j;
-
 	int x;
     int y;
 
+	i = 0;
 	x = 0;
     y = 0;
 	while (gamedata -> map[i])
@@ -389,7 +388,7 @@ void	player_movement(t_gamedata *gamedata, int current_x, int current_y)
 		{
 			if (gamedata->map[current_x][current_y] == 'E')
 			{
-				printf("Congrats! You`ve succesfully trapped the Cats in the Tree");
+				printf("Congrats! You`ve succesfully trapped the Kittens in the Tree");
 				exit_game(gamedata, NULL, 0);
 			}
 			gamedata->map[gamedata->current_x][gamedata->current_y] = '0';
@@ -456,7 +455,7 @@ void game_init(t_gamedata *gamedata)
 
 	gamedata->window_width = 64 * get_line_size(gamedata);
 	gamedata->window_height = 64 * get_line_count(gamedata);
-	mlx_window = mlx_new_window(gamedata->mlx, gamedata->window_width, gamedata->window_height, "a");
+	mlx_window = mlx_new_window(gamedata->mlx, gamedata->window_width, gamedata->window_height, "Kitten grab`n trapp ");
 	gamedata->mlx_window = mlx_window;
 }
 
