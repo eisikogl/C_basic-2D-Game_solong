@@ -27,12 +27,13 @@ typedef struct s_gamedata
 
     char **map;
 
-    char *wall_path;
-    char *player_path;
-    char *obstacle_path;
-    char *collectible_path;
-    char *background_path;
-    char *exit_path;
+    void *wall_object;
+    void *collectible_object;
+    void *exit_object;
+    void *player_up_object;
+    void *player_left_object;
+    void *player_down_object;
+    void *player_right_object;
     
     char *map_destination;
 
@@ -50,6 +51,9 @@ typedef struct s_gamedata
 
     int image_size;
     int has_error;
+
+    char current_direction;
+    char *direction_path;
 
 } t_gamedata;
 

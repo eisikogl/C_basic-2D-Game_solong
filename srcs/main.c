@@ -118,16 +118,6 @@ char	**ft_split(const char *s, char c)
 }
 #pragma endregion
 
-//SOOOOOOO_LONG
-//
-//
-// void set_game_assets(t_gamedata *gamedata)
-// {
-// 	void *wall_image;
-
-// 	gamedata->wall_path = "./assets/walls/wall1.xpm";
-// }
-
 int get_line_count(t_gamedata *gamedata)
 {
 	char c;
@@ -181,59 +171,108 @@ int get_file_length(t_gamedata *gamedata)
 void instantiate_wall(t_gamedata *gamedata, int x, int y)
 {
 	void	*img;
-	
-	gamedata->wall_path = "./assets/walls/wall2.xpm";
-	img = mlx_xpm_file_to_image(gamedata->mlx, gamedata->wall_path, &gamedata->image_size, &gamedata->image_size);
+	char *path;
+
+	path = "./assets/walls/wall2.xpm";
+	img = mlx_xpm_file_to_image(gamedata->mlx, path, &gamedata->image_size, &gamedata->image_size);
+	gamedata->wall_object = img;
     mlx_put_image_to_window(gamedata->mlx, gamedata->mlx_window, img, x, y);
 }
 
 void instantiate_collectible(t_gamedata *gamedata, int x, int y)
 {
 	void	*img;
-	
-	gamedata->wall_path = "./assets/collectibles/collectible1.xpm";
-	img = mlx_xpm_file_to_image(gamedata->mlx, gamedata->wall_path, &gamedata->image_size, &gamedata->image_size);
+	char *path;
+
+	path = "./assets/collectibles/collectible1.xpm";
+	img = mlx_xpm_file_to_image(gamedata->mlx, path, &gamedata->image_size, &gamedata->image_size);
+	gamedata->collectible_object = img;
     mlx_put_image_to_window(gamedata->mlx, gamedata->mlx_window, img, x, y);
 }
 
 void instantiate_exit(t_gamedata *gamedata, int x, int y)
 {
 	void	*img;
-	
-	gamedata->wall_path = "./assets/exits/exit1.xpm";
-	img = mlx_xpm_file_to_image(gamedata->mlx, gamedata->wall_path, &gamedata->image_size, &gamedata->image_size);
+	char *path;
+
+	path = "./assets/exits/exit1.xpm";
+	img = mlx_xpm_file_to_image(gamedata->mlx, path, &gamedata->image_size, &gamedata->image_size);
+	gamedata->exit_object = img;
     mlx_put_image_to_window(gamedata->mlx, gamedata->mlx_window, img, x, y);
+}
+
+void get_object_path(t_gamedata *gamedata)
+{
+	char *path;
+
+	if (gamedata->current_direction == 'W')
+		path = "./assets/player/player_up.xpm";
+	if (gamedata->current_direction == 'A')
+		path = "./assets/player/player_left.xpm";
+	if (gamedata->current_direction == 'S')
+		path = "./assets/player/player_down.xpm";
+	if (gamedata->current_direction == 'D')
+		path = "./assets/player/player_right.xpm";
+	gamedata->direction_path = path;
+}
+
+void instantiate_player_direction(t_gamedata *gamedata, void *img)
+{
+	if (gamedata->current_direction == 'W')
+		gamedata->player_up_object = img;
+	if (gamedata->current_direction == 'A')
+		gamedata->player_left_object = img;
+	if (gamedata->current_direction == 'S')
+		gamedata->player_down_object = img;
+	if (gamedata->current_direction == 'D')
+		gamedata->player_right_object = img;
 }
 
 void instantiate_player(t_gamedata *gamedata, int x, int y)
 {
 	void	*img;
-	
-	gamedata->wall_path = "./assets/player/player_down.xpm";
-	img = mlx_xpm_file_to_image(gamedata->mlx, gamedata->wall_path, &gamedata->image_size, &gamedata->image_size);
+
+	img = mlx_xpm_file_to_image(gamedata->mlx, gamedata->direction_path, &gamedata->image_size, &gamedata->image_size);
+	instantiate_player_direction(gamedata, img);
     mlx_put_image_to_window(gamedata->mlx, gamedata->mlx_window, img, x, y);
 }
 
-void instantiate_player_up(t_gamedata *gamedata, int x, int y)
-{
-	void	*img;
-	gamedata->wall_path = "./assets/player/player_up.xpm";
-	img = mlx_xpm_file_to_image(gamedata->mlx, gamedata->wall_path, &gamedata->image_size, &gamedata->image_size);
-    mlx_put_image_to_window(gamedata->mlx, gamedata->mlx_window, img, x, y);
-}
 
 void instantiate_world(t_gamedata *gamedata, int x, int y, char object)
 {
 	if (object == '1')
 		instantiate_wall(gamedata, x, y);
-	// if (object == 'P')
-	// {
-	// 	instantiate_player(gamedata, x, y);
-	// }
+	if (object == 'P')
+	{
+		get_object_path(gamedata);
+		instantiate_player(gamedata, x, y);
+	}
 	if (object == 'C')
 		instantiate_collectible(gamedata, x, y);
 	if (object == 'E')
 		instantiate_exit(gamedata, x, y);
+}
+
+void get_initial_informations(t_gamedata *gamedata)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (gamedata->map[i])
+	{
+		j = 0;
+		while (gamedata->map[i][j])
+		{
+			if (gamedata->map[i][j] == 'P')
+			{
+				gamedata->current_x = i;
+				gamedata->current_y = j;
+			}
+			j++;
+		}
+		i++;
+	}
 }
 
 void read_map(t_gamedata *gamedata)
@@ -244,30 +283,17 @@ void read_map(t_gamedata *gamedata)
     
     file_length = get_file_length(gamedata);
     map = (char *)malloc(file_length + 1);
-    fd = open(gamedata->map_destination, O_RDWR);
+    fd = open(gamedata->map_destination, O_RDONLY);
     read(fd, map, file_length);
     gamedata->map = ft_split(map, '\n');
 
+	get_initial_informations(gamedata);
     close(fd);
 	free(map);
 }
-void print_map(t_gamedata *gamedata)
-{
-	int i;
-	i= 0;
-	while (gamedata -> map[i])
-	{
-	
-		printf("%s",gamedata->map[i]);
 
-		printf("\n");
-		i++;
-	}
-}
-void render_map(t_gamedata *gamedata,int key)
+void render_map(t_gamedata *gamedata)
 {
-   
-
 	int i = 0;
 	int j;
 
@@ -283,95 +309,135 @@ void render_map(t_gamedata *gamedata,int key)
 		while (gamedata -> map[i][j])
 		{
 			instantiate_world(gamedata, x, y, gamedata -> map[i][j]);
-			if (gamedata -> map[i][j] == 'P')
-			{
-				gamedata->current_x = x;	// X posiotion of grafic 64 bit
-				gamedata->current_y = y;	// Y Position of grafic 64 bit
-				gamedata->map_coordinates_i = i; // x coordinate of map[i][j]
-				gamedata->map_coordinates_j = j; // y cooridnate of map[i][j]
-				printf("%d %d",gamedata->map_coordinates_i,gamedata->map_coordinates_j);
-				if(key == 9999)
-					instantiate_player(gamedata, x, y);
-				if(key == W)
-				{
-					instantiate_player_up(gamedata, gamedata->current_x, gamedata->current_y);
-					printf("y = %d",gamedata->current_y);
-					
-				}
-				//printf("%d and %d",gamedata->current_x - 1,gamedata->current_y);
-			} 
 			x += 64;
 			j++;
 		}
 	    y += 64;
-		printf("\n");
 		i++;
 	}
 }
 
-// void player_movement(t_gamedata *gamedata)
-// {
-		
-// }
-	void player_move_up(t_gamedata *gamedata)
- 	{	
-  		gamedata->map[gamedata->map_coordinates_i - 1][gamedata->map_coordinates_j] = 'P'; // chage map Player posiotion
-		gamedata->map[gamedata->map_coordinates_i][gamedata->map_coordinates_j] = '0'; // delete old Player Position
-		
-		
-		print_map(gamedata);
+void	player_movement(t_gamedata *gamedata, int current_x, int current_y)
+{
+	gamedata->map[gamedata->current_x][gamedata->current_y] = '0';
+	gamedata->current_x = current_x;
+	gamedata->current_y = current_y;
+	gamedata->map[current_x][current_y] = 'P';
+	mlx_clear_window(gamedata->mlx, gamedata->mlx_window);
+
+	render_map(gamedata);
+}
+
+void	move_character_up(t_gamedata *gamedata)
+{
+	gamedata->current_direction = 'W';
+	player_movement(gamedata, gamedata->current_x - 1, gamedata->current_y);
+}
+
+void	move_character_left(t_gamedata *gamedata)
+{
+	gamedata->current_direction = 'A';
+	player_movement(gamedata, gamedata->current_x, gamedata->current_y - 1);
+}
+
+void	move_character_down(t_gamedata *gamedata)
+{
+	gamedata->current_direction = 'S';
+	player_movement(gamedata, gamedata->current_x + 1, gamedata->current_y);
+}
+
+void	move_character_right(t_gamedata *gamedata)
+{
+	gamedata->current_direction = 'D';
+	player_movement(gamedata, gamedata->current_x, gamedata->current_y + 1);
+}
+
+void	free_map(char **map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+	{
+		free(map[i]);
+		i++;
 	}
+	free(map);
+}
 
-// void player_move_down(t_gamedata *gamedata)
-// {
-// 	gamedata->map[gamedata->current_x, gamedata->current_y + 1];
-// }
-
-// void player_move_left(t_gamedata *gamedata)
-// {
-// 	gamedata->map[gamedata->current_x - 1, gamedata->current_y];
-// }
-
-// void player_move_right(t_gamedata *gamedata)
-// {
-// 	gamedata->map[gamedata->current_x + 1, gamedata->current_y];
-// }
+int	exit_game(t_gamedata *gamedata, char *str, int exit_mode)
+{
+	if (str)
+		printf("ERROR\n%s You left dude come back... ", str);
+	if (gamedata->wall_object)
+		mlx_destroy_image(gamedata->mlx, gamedata->wall_object);
+	if (gamedata->collectible_object)
+		mlx_destroy_image(gamedata->mlx, gamedata->collectible_object);
+	if (gamedata->exit_object)
+		mlx_destroy_image(gamedata->mlx, gamedata->exit_object);
+	if (gamedata->player_up_object)
+		mlx_destroy_image(gamedata->mlx, gamedata->player_up_object);
+	if (gamedata->player_left_object)
+		mlx_destroy_image(gamedata->mlx, gamedata->player_left_object);
+	if (gamedata->player_down_object)
+		mlx_destroy_image(gamedata->mlx, gamedata->player_down_object);
+	if (gamedata->player_right_object)
+		mlx_destroy_image(gamedata->mlx, gamedata->player_right_object);
+	if (gamedata->map)
+		free_map(gamedata->map);
+	if (gamedata)
+		free(gamedata);
+	exit(exit_mode);
+}
 
 int key_event(int key, t_gamedata *gamedata)
 {
 	if (key == W)
+		move_character_up(gamedata);
+	if (key == A)
+		move_character_left(gamedata);
+	if (key == S)
+		move_character_down(gamedata);
+	if (key == D)
+		move_character_right(gamedata);
+	if (key == ESC)
 	{
-		//move player up
-		
-		player_move_up(gamedata);
-		mlx_clear_window(gamedata->mlx,gamedata->mlx_window); // delete old img
-		render_map(gamedata,W);
-		
+		printf("You left dude come back...");
+		exit_game(gamedata, NULL, 0);
 	}
-	printf("aa");
 	return 0;
 }
 
-
-int main()
+void game_init(t_gamedata *gamedata)
 {
+	void *mlx_window;
 	void *mlx;
-    void *mlx_window;
 
-    mlx = mlx_init();
-	
-    t_gamedata *gamedata;
-    gamedata = malloc(sizeof(t_gamedata));
-
-	gamedata->map_destination = "./maps/map2.ber";
+	mlx = mlx_init();
 	gamedata->mlx = mlx;
+
+
 	gamedata->window_width = 64 * get_line_size(gamedata);
 	gamedata->window_height = 64 * get_line_count(gamedata);
 	mlx_window = mlx_new_window(gamedata->mlx, gamedata->window_width, gamedata->window_height, "a");
 	gamedata->mlx_window = mlx_window;
-	read_map(gamedata);
-	render_map(gamedata,9999);
+}
+
+int main(int argc, char **argv)
+{
+    t_gamedata *gamedata;
+    gamedata = malloc(sizeof(t_gamedata));
+
+	gamedata->current_direction = 'S';
+	gamedata->map_destination = argv[1];
+	if (argc == 0)
+		exit_game(gamedata, NULL, 0);
+	game_init(gamedata);
+
+    read_map(gamedata);
+	render_map(gamedata);
 	mlx_hook(gamedata->mlx_window, 2, 1L << 0, key_event, gamedata);
-	mlx_loop(mlx);
+	mlx_hook(gamedata->mlx_window, 17, 1L << 17, exit_game, gamedata);
+	mlx_loop(gamedata->mlx);
     return 0;
 }
