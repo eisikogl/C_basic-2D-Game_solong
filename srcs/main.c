@@ -171,7 +171,7 @@ int get_file_length(t_gamedata *gamedata)
 void instantiate_wall(t_gamedata *gamedata, int x, int y)
 {
 	void	*img;
-	char *path;
+	char	*path;
 
 	path = "./assets/walls/wall2.xpm";
 	img = mlx_xpm_file_to_image(gamedata->mlx, path, &gamedata->image_size, &gamedata->image_size);
@@ -259,6 +259,10 @@ void get_initial_informations(t_gamedata *gamedata)
 	int	j;
 
 	i = 0;
+	gamedata->collectible_count = 0;
+	gamedata->collectible_size = 0;
+	gamedata->player_move_count = 0;
+	printf("Movecount : %d \n", gamedata->player_move_count);
 	while (gamedata->map[i])
 	{
 		j = 0;
@@ -269,6 +273,11 @@ void get_initial_informations(t_gamedata *gamedata)
 				gamedata->current_x = i;
 				gamedata->current_y = j;
 			}
+			if (gamedata->map[i][j] == 'C')
+			{
+				gamedata->collectible_size += 1;
+			}
+			
 			j++;
 		}
 		i++;
@@ -317,43 +326,6 @@ void render_map(t_gamedata *gamedata)
 	}
 }
 
-void	player_movement(t_gamedata *gamedata, int current_x, int current_y)
-{
-	if (gamedata->map[current_x][current_y] != '1')
-	{
-		gamedata->map[gamedata->current_x][gamedata->current_y] = '0';
-		gamedata->current_x = current_x;
-		gamedata->current_y = current_y;
-		gamedata->map[current_x][current_y] = 'P';
-		mlx_clear_window(gamedata->mlx, gamedata->mlx_window);
-	}
-	render_map(gamedata);
-}
-
-void	move_character_up(t_gamedata *gamedata)
-{
-	gamedata->current_direction = 'W';
-	player_movement(gamedata, gamedata->current_x - 1, gamedata->current_y);
-}
-
-void	move_character_left(t_gamedata *gamedata)
-{
-	gamedata->current_direction = 'A';
-	player_movement(gamedata, gamedata->current_x, gamedata->current_y - 1);
-}
-
-void	move_character_down(t_gamedata *gamedata)
-{
-	gamedata->current_direction = 'S';
-	player_movement(gamedata, gamedata->current_x + 1, gamedata->current_y);
-}
-
-void	move_character_right(t_gamedata *gamedata)
-{
-	gamedata->current_direction = 'D';
-	player_movement(gamedata, gamedata->current_x, gamedata->current_y + 1);
-}
-
 void	free_map(char **map)
 {
 	int	i;
@@ -391,6 +363,69 @@ int	exit_game(t_gamedata *gamedata, char *str, int exit_mode)
 		free(gamedata);
 	exit(exit_mode);
 }
+
+
+void	player_movement(t_gamedata *gamedata, int current_x, int current_y)
+{
+	if (gamedata->map[current_x][current_y] != '1')
+	{
+		gamedata->player_move_count += 1;
+		printf("Movecount : %d \n", gamedata->player_move_count);
+		if (gamedata->collectible_size != gamedata->collectible_count)
+		{
+			if (gamedata->map[current_x][current_y] == 'C')
+			{
+				gamedata->collectible_count += 1;
+			}
+			if (gamedata->map[current_x][current_y] != 'E')
+			{
+				gamedata->map[gamedata->current_x][gamedata->current_y] = '0';
+				gamedata->current_x = current_x;
+				gamedata->current_y = current_y;
+				gamedata->map[current_x][current_y] = 'P';
+			}
+		}
+		if (gamedata->collectible_size == gamedata->collectible_count)
+		{
+			if (gamedata->map[current_x][current_y] == 'E')
+			{
+				printf("Congrats! You`ve succesfully trapped the Cats in the Tree");
+				exit_game(gamedata, NULL, 0);
+			}
+			gamedata->map[gamedata->current_x][gamedata->current_y] = '0';
+			gamedata->current_x = current_x;
+			gamedata->current_y = current_y;
+			gamedata->map[current_x][current_y] = 'P';
+		}
+		mlx_clear_window(gamedata->mlx, gamedata->mlx_window);
+	}
+	render_map(gamedata);
+}
+
+void	move_character_up(t_gamedata *gamedata)
+{
+	gamedata->current_direction = 'W';
+	player_movement(gamedata, gamedata->current_x - 1, gamedata->current_y);
+}
+
+void	move_character_left(t_gamedata *gamedata)
+{
+	gamedata->current_direction = 'A';
+	player_movement(gamedata, gamedata->current_x, gamedata->current_y - 1);
+}
+
+void	move_character_down(t_gamedata *gamedata)
+{
+	gamedata->current_direction = 'S';
+	player_movement(gamedata, gamedata->current_x + 1, gamedata->current_y);
+}
+
+void	move_character_right(t_gamedata *gamedata)
+{
+	gamedata->current_direction = 'D';
+	player_movement(gamedata, gamedata->current_x, gamedata->current_y + 1);
+}
+
 
 int key_event(int key, t_gamedata *gamedata)
 {

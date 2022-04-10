@@ -52,6 +52,11 @@ typedef struct s_gamedata
     int image_size;
     int has_error;
 
+    int collectible_count;
+    int collectible_size;
+
+    int player_move_count;
+
     char current_direction;
     char *direction_path;
 
