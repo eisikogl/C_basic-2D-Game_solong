@@ -319,12 +319,14 @@ void render_map(t_gamedata *gamedata)
 
 void	player_movement(t_gamedata *gamedata, int current_x, int current_y)
 {
-	gamedata->map[gamedata->current_x][gamedata->current_y] = '0';
-	gamedata->current_x = current_x;
-	gamedata->current_y = current_y;
-	gamedata->map[current_x][current_y] = 'P';
-	mlx_clear_window(gamedata->mlx, gamedata->mlx_window);
-
+	if (gamedata->map[current_x][current_y] != '1')
+	{
+		gamedata->map[gamedata->current_x][gamedata->current_y] = '0';
+		gamedata->current_x = current_x;
+		gamedata->current_y = current_y;
+		gamedata->map[current_x][current_y] = 'P';
+		mlx_clear_window(gamedata->mlx, gamedata->mlx_window);
+	}
 	render_map(gamedata);
 }
 
