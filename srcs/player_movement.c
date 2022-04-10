@@ -1,0 +1,52 @@
+#include "../includes/so_long.h"
+
+void	move_character_up(t_gamedata *gamedata)
+{
+	gamedata->current_direction = 'W';
+	player_movement(gamedata, gamedata->current_x - 1, gamedata->current_y);
+}
+
+void	move_character_left(t_gamedata *gamedata)
+{
+	gamedata->current_direction = 'A';
+	player_movement(gamedata, gamedata->current_x, gamedata->current_y - 1);
+}
+
+void	move_character_down(t_gamedata *gamedata)
+{
+	gamedata->current_direction = 'S';
+	player_movement(gamedata, gamedata->current_x + 1, gamedata->current_y);
+}
+
+void	move_character_right(t_gamedata *gamedata)
+{
+	gamedata->current_direction = 'D';
+	player_movement(gamedata, gamedata->current_x, gamedata->current_y + 1);
+}
+
+void	player_movement(t_gamedata *gamedata, int current_x, int current_y)
+{
+	if (gamedata->map[current_x][current_y] != '1')
+	{
+		if (gamedata->collectible_size != gamedata->collectible_count)
+		{
+			if (gamedata->map[current_x][current_y] == 'C')
+				gamedata->collectible_count += 1;
+			if (gamedata->map[current_x][current_y] != 'E')
+			{
+				gamedata->map[gamedata->current_x][gamedata->current_y] = '0';
+				gamedata->current_x = current_x;
+				gamedata->current_y = current_y;
+				gamedata->map[current_x][current_y] = 'P';
+			}
+			gamedata->player_move_count += 1;
+			printf("Score : %d \n", gamedata->player_move_count);
+		}
+		else /////////STAAAAAAACK
+		{
+			if (gamedata->map[current_x][current_y] == 'E')
+				exit_game(gamedata, NULL, 2);
+		}
+	}
+	render_map(gamedata);
+}
