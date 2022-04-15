@@ -26,27 +26,24 @@ void	move_character_right(t_gamedata *gamedata)
 
 void	player_movement(t_gamedata *gamedata, int current_x, int current_y)
 {
-	if (gamedata->map[current_x][current_y] != '1')
+	if (gamedata->map[current_x][current_y] != '1' && \
+		gamedata->map[current_x][current_y] != 'E')
 	{
-		if (gamedata->collectible_size != gamedata->collectible_count)
-		{
-			if (gamedata->map[current_x][current_y] == 'C')
-				gamedata->collectible_count += 1;
-			if (gamedata->map[current_x][current_y] != 'E')
-			{
-				gamedata->map[gamedata->current_x][gamedata->current_y] = '0';
-				gamedata->current_x = current_x;
-				gamedata->current_y = current_y;
-				gamedata->map[current_x][current_y] = 'P';
-			}
-			gamedata->player_move_count += 1;
-			printf("Score : %d \n", gamedata->player_move_count);
-		}
-		else /////////STAAAAAAACK
-		{
-			if (gamedata->map[current_x][current_y] == 'E')
-				exit_game(gamedata, NULL, 2);
-		}
+		if (gamedata->map[current_x][current_y] == 'C' && \
+			gamedata->collectible_size != gamedata->collectible_count)
+			gamedata->collectible_count += 1;
+		gamedata->map[gamedata->current_x][gamedata->current_y] = '0';
+		gamedata->current_x = current_x;
+		gamedata->current_y = current_y;
+		gamedata->map[current_x][current_y] = 'P';
+		if (gamedata->map[current_x][current_y] == 'E' && \
+			gamedata->collectible_size == gamedata->collectible_count)
+			exit_game(gamedata, NULL, 2);
+		gamedata->player_move_count += 1;
+		ft_printf("Score : %d \n", gamedata->player_move_count);
+		render_map(gamedata);
 	}
-	render_map(gamedata);
+	else if (gamedata->collectible_size == gamedata->collectible_count && \
+		gamedata->map[current_x][current_y] == 'E')
+		exit_game(gamedata, NULL, 2);
 }
