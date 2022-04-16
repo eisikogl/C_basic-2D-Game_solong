@@ -36,14 +36,15 @@ void	player_movement(t_gamedata *gamedata, int current_x, int current_y)
 		gamedata->current_x = current_x;
 		gamedata->current_y = current_y;
 		gamedata->map[current_x][current_y] = 'P';
-		if (gamedata->map[current_x][current_y] == 'E' && \
-			gamedata->collectible_size == gamedata->collectible_count)
-			exit_game(gamedata, NULL, 2);
 		gamedata->player_move_count += 1;
-		ft_printf("Score : %d \n", gamedata->player_move_count);
+		ft_printf("Moves: %d \n", gamedata->player_move_count);
 		render_map(gamedata);
 	}
 	else if (gamedata->collectible_size == gamedata->collectible_count && \
 		gamedata->map[current_x][current_y] == 'E')
-		exit_game(gamedata, NULL, 2);
+		{
+			gamedata->player_move_count += 1;
+			ft_printf("Moves: %d \n", gamedata->player_move_count);
+			exit_game(gamedata, 2);
+		}
 }

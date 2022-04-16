@@ -4,7 +4,7 @@ CC		= gcc
 
 CFLAGS	= -Wall -Wextra -Werror
 
-SRCS	= ./srcs/input_control.c ./srcs/instantiate_objects.c ./srcs/main.c ./srcs/player_movement.c ./srcs/read_map.c ./srcs/render_map.c 
+SRCS	= ./srcs/input_control.c ./srcs/instantiate_objects.c ./srcs/main.c ./srcs/player_movement.c ./srcs/read_map.c ./srcs/render_map.c ./srcs/validate.c 
 
 OBJS	= $(SRCS:%.c=%.o)
 

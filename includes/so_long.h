@@ -38,24 +38,16 @@ typedef struct s_gamedata
 
 	char	*map_destination;
 
-	int		x;
-	int		y;
-
 	int		current_x;
 	int		current_y;
-
-	int		map_coordinates_i;
-	int		map_coordinates_j;
-
-	int		line_count;
-	int		line_size;
 
 	int		image_size;
 
 	int		collectible_count;
+	int		collectible_size;
+
 	int		player_spawn_point_count;
 	int		exit_count;
-	int		collectible_size;
 
 	int		player_move_count;
 
@@ -64,7 +56,8 @@ typedef struct s_gamedata
 
 }	t_gamedata;
 
-int		exit_game(t_gamedata *gamedata, char *str, int exit_mode);
+void	exit_modes(int exit_mode);
+int		exit_game(t_gamedata *gamedata, int exit_mode);
 int		key_event(int key, t_gamedata *gamedata);
 
 void	instantiate_wall(t_gamedata *gamedata, int x, int y);
@@ -89,5 +82,8 @@ void	get_object_path(t_gamedata *gamedata);
 void	instantiate_world(t_gamedata *gamedata, int x, int y, char object);
 void	render_map(t_gamedata *gamedata);
 void	free_map(char **map);
+
+void	map_validate(t_gamedata *gamedata);
+void	validate(t_gamedata *gamedata);
 
 #endif
