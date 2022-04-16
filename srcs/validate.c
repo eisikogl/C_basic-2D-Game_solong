@@ -23,13 +23,15 @@ void	map_validate(t_gamedata *gamedata)
 				gamedata->map[i][j] != 'P' && \
 				gamedata->map[i][j] != 'E' && \
 				gamedata->map[i][j] != 'C')
-					exit_game(gamedata, 8);	
+					exit_game(gamedata, 7);
 			j++;
 		}
-		if(row_size != j - 1)
-			exit_game(gamedata, 7);
+		if (row_size != j - 1)
+			exit_game(gamedata, 8);
 		i++;
 	}
+	if (column_size != i - 1)
+		exit_game(gamedata, 9);
 }
 
 void validate(t_gamedata *gamedata)

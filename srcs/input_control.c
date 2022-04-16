@@ -11,16 +11,17 @@ void exit_modes(int exit_mode)
 	if (exit_mode == 3)
 		ft_printf("Error\nInvalid Map");
 	if (exit_mode == 4)
-		ft_printf("Error\ntoo many or too less Player spawn points");
+		ft_printf("Error\nInvalid Map, Too many or too less Player spawn points");
 	if (exit_mode == 5)
-		ft_printf("Error\nNo Collectibles found");
+		ft_printf("Error\nInvalid Map, No Collectibles found");
 	if (exit_mode == 6)
-		ft_printf("Error\nLess than 1 Exit availible");
+		ft_printf("Error\nInvalid Map, Less than 1 Exit availible");
 	if (exit_mode == 7)
-		ft_printf("Error\nInvalid Map, row too short");
+		ft_printf("Error\nInvalid Map, Forbidden characters");
 	if (exit_mode == 8)
-		ft_printf("Error\nInvalid Map, forbidden characters");
-	
+		ft_printf("Error\nInvalid Map, Row too short");
+	if (exit_mode == 9)
+		ft_printf("Error\nInvalid Map, Empty row");	
 }
 
 int	exit_game(t_gamedata *gamedata, int exit_mode)
