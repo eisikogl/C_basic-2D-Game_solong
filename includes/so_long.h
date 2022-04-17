@@ -86,4 +86,7 @@ void	free_map(char **map);
 void	map_validate(t_gamedata *gamedata);
 void	validate(t_gamedata *gamedata);
 
+void	instantiate_world_bonus(t_gamedata *gamedata, int x, int y, char object);
+void	instantiate_enemy(t_gamedata *gamedata, int x, int y);
+
 #endif

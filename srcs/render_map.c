@@ -48,6 +48,7 @@ void	render_map(t_gamedata *gamedata)
 		while (gamedata -> map[i][j])
 		{
 			instantiate_world(gamedata, x, y, gamedata -> map[i][j]);
+			instantiate_world_bonus(gamedata, x, y, gamedata->map[i][j]);
 			x += 64;
 			j++;
 		}

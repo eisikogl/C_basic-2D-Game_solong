@@ -21,7 +21,9 @@ void exit_modes(int exit_mode)
 	if (exit_mode == 8)
 		ft_printf("Error\nInvalid Map, Row too short");
 	if (exit_mode == 9)
-		ft_printf("Error\nInvalid Map, Empty row");	
+		ft_printf("Error\nInvalid Map, Empty row");
+	if (exit_mode == 10)
+		ft_printf("Game Over! You Died! The Dog ate you");	
 }
 
 int	exit_game(t_gamedata *gamedata, int exit_mode)

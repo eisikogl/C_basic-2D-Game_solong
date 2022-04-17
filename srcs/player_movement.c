@@ -27,7 +27,8 @@ void	move_character_right(t_gamedata *gamedata)
 void	player_movement(t_gamedata *gamedata, int current_x, int current_y)
 {
 	if (gamedata->map[current_x][current_y] != '1' && \
-		gamedata->map[current_x][current_y] != 'E')
+		gamedata->map[current_x][current_y] != 'E' && \
+		gamedata->map[current_x][current_y]	!= 'e')
 	{
 		if (gamedata->map[current_x][current_y] == 'C' && \
 			gamedata->collectible_size != gamedata->collectible_count)
@@ -47,4 +48,6 @@ void	player_movement(t_gamedata *gamedata, int current_x, int current_y)
 			ft_printf("Moves: %d \n", gamedata->player_move_count);
 			exit_game(gamedata, 2);
 		}
+	if(gamedata->map[current_x][current_y] == 'e')
+		exit_game(gamedata,10);
 }

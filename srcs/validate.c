@@ -22,7 +22,8 @@ void	map_validate(t_gamedata *gamedata)
 				gamedata->map[i][j] != '1' && \
 				gamedata->map[i][j] != 'P' && \
 				gamedata->map[i][j] != 'E' && \
-				gamedata->map[i][j] != 'C')
+				gamedata->map[i][j] != 'C' && \
+				gamedata->map[i][j] != 'e')
 					exit_game(gamedata, 7);
 			j++;
 		}
