@@ -88,5 +88,6 @@ void	validate(t_gamedata *gamedata);
 
 void	instantiate_world_bonus(t_gamedata *gamedata, int x, int y, char object);
 void	instantiate_enemy(t_gamedata *gamedata, int x, int y);
+void	instantiate_background(t_gamedata *gamedata, int x, int y);
 
 #endif

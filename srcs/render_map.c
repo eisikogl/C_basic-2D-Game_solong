@@ -17,6 +17,8 @@ void	get_object_path(t_gamedata *gamedata)
 
 void	instantiate_world(t_gamedata *gamedata, int x, int y, char object)
 {
+	// if (object == '0')
+	// 	instantiate_background(gamedata, x, y);
 	if (object == '1')
 		instantiate_wall(gamedata, x, y);
 	if (object == 'P')

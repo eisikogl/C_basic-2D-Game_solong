@@ -1,5 +1,18 @@
 #include "../includes/so_long.h"
 
+// void	instantiate_background(t_gamedata *gamedata, int x, int y)
+// {
+// 	void	*img;
+// 	char	*path;
+
+// 	path = "./assets/background/grass.xpm";
+// 	img = mlx_xpm_file_to_image(gamedata->mlx, path, \
+// 		&gamedata->image_size, &gamedata->image_size);
+// 	gamedata->collectible_object = img;
+// 	mlx_put_image_to_window(gamedata->mlx, gamedata->mlx_window, img, x, y);
+// }
+
+
 void	instantiate_wall(t_gamedata *gamedata, int x, int y)
 {
 	void	*img;

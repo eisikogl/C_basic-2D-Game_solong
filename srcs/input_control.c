@@ -7,7 +7,7 @@ void exit_modes(int exit_mode)
 	if (exit_mode == 1)
 		ft_printf("You left dude come back... ");
 	if (exit_mode == 2)
-		ft_printf("Congrats! You`ve succesfully trapped the Kittens in the Tree");
+		ft_printf("Congcats! You`ve succesfully trapped the Kittens in the Tree");
 	if (exit_mode == 3)
 		ft_printf("Error\nInvalid Map");
 	if (exit_mode == 4)
