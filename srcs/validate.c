@@ -39,7 +39,7 @@ void validate(t_gamedata *gamedata)
 {
 	if(gamedata->player_spawn_point_count != 1)
 		exit_game(gamedata, 4);
-	if(gamedata->collectible_size == 0)
+	if(gamedata->collectible_size < 1)
 		exit_game(gamedata, 5);
 	if(gamedata->exit_count < 1)
 		exit_game(gamedata, 6);

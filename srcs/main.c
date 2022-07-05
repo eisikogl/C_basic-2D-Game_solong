@@ -23,6 +23,7 @@ void	start_init(t_gamedata *gamedata)
 	gamedata->window_width = 0;
 	gamedata->player_spawn_point_count = 0;
 	gamedata->exit_count = 0;
+	gamedata->collectible_size = 0;
 }
 
 void	game_init(t_gamedata *gamedata)
@@ -41,22 +42,32 @@ void	game_init(t_gamedata *gamedata)
 
 int	main(int argc, char **argv)
 {
-	t_gamedata	*gamedata;
+	if(argc == 2)
+	{
+		if(!(ft_strnstr(argv[1],".ber")))
+		{
+			perror("invalid Map .ber");
+			return 0;
+		}
+		t_gamedata	*gamedata;
 
-	gamedata = malloc(sizeof(t_gamedata));
-	if (!gamedata)
-		perror("Error\n");
-	start_init(gamedata);
-	if (argc != 2)
-		exit_game(gamedata, 0);
-	gamedata->map_destination = argv[1];
-	read_map(gamedata);
-	map_validate(gamedata);
-	validate(gamedata);
-	game_init(gamedata);
-	render_map(gamedata);
-	mlx_hook(gamedata->mlx_window, 2, 1L << 0, key_event, gamedata);
-	mlx_hook(gamedata->mlx_window, 17, 1L << 17, exit_game, gamedata);
-	mlx_loop(gamedata->mlx);
+		gamedata = malloc(sizeof(t_gamedata));
+		if (!gamedata)
+			perror("Error\n");
+		start_init(gamedata);
+		gamedata->map_destination = argv[1];
+		read_map(gamedata);
+		map_validate(gamedata);
+		validate(gamedata);
+		game_init(gamedata);
+		render_map(gamedata);
+		mlx_hook(gamedata->mlx_window, 2, 1L << 0, key_event, gamedata);
+		mlx_hook(gamedata->mlx_window, 17, 1L << 17, exit_game, gamedata);
+		mlx_loop(gamedata->mlx);
+	}
+	else
+	{
+		perror("Invalid Arg size");
+	}
 	return (0);
 }
