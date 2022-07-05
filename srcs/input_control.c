@@ -23,7 +23,9 @@ void exit_modes(int exit_mode)
 	if (exit_mode == 9)
 		ft_printf("Error\nInvalid Map, Empty row");
 	if (exit_mode == 10)
-		ft_printf("Game Over! You Died! The Dog ate you");	
+		ft_printf("Game Over! You Died! The Dog ate you");
+	if (exit_mode == 11)
+		perror("Error\ninvalid Map .ber");
 }
 
 int	exit_game(t_gamedata *gamedata, int exit_mode)
