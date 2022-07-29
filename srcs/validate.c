@@ -6,7 +6,7 @@
 /*   By: eisikogl <eisikogl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 22:39:13 by eisikogl          #+#    #+#             */
-/*   Updated: 2022/07/29 03:52:27 by eisikogl         ###   ########.fr       */
+/*   Updated: 2022/07/29 07:26:37 by eisikogl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,35 @@ void	map_validate(t_gamedata *gamedata, int row_size, int column_size)
 
 void	validate(t_gamedata *gamedata)
 {
-	if (gamedata->player_spawn_point_count != 1)
+	if (gamedata->player_spawn_point_count > 1)
 		exit_game(gamedata, 4);
+	if (gamedata->player_spawn_point_count < 1)
+		exit_game(gamedata, 10);
 	if (gamedata->collectible_size < 1)
 		exit_game(gamedata, 5);
 	if (gamedata->exit_count < 1)
 		exit_game(gamedata, 6);
+}
+
+int	check_arg_extension(int argc, char **argv)
+{
+	int	map_arglen;
+
+	if (argc < 2)
+	{
+		ft_printf("Error\nInvalid Arg: Map file missing");
+		return (0);
+	}
+	if (argc > 2)
+	{
+		ft_printf("Error\nInvalid Arg: Too many Arguments");
+		return (0);
+	}
+	map_arglen = ft_strlen(argv[1]);
+	if (!(ft_strnstr(&argv[1][map_arglen - 4], ".ber", 4)))
+	{
+		perror("Error\ninvalid Map extension use .ber");
+		return (0);
+	}
+	return (1);
 }

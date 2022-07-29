@@ -6,7 +6,7 @@
 /*   By: eisikogl <eisikogl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 22:38:28 by eisikogl          #+#    #+#             */
-/*   Updated: 2022/07/29 03:48:51 by eisikogl         ###   ########.fr       */
+/*   Updated: 2022/07/29 07:54:32 by eisikogl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,8 @@ int	main(int argc, char **argv)
 {
 	t_gamedata	*gamedata;
 
-	if (argc != 2)
-	{
-		perror("Error\nInvalid Arg size");
+	if (!(check_arg_extension(argc, argv)))
 		return (0);
-	}
-	if (!(ft_strnstr(argv[1], ".ber")))
-	{
-		perror("Error\ninvalid Map .ber");
-		return (0);
-	}
 	gamedata = malloc(sizeof(t_gamedata));
 	if (!gamedata)
 		perror("Error\n");

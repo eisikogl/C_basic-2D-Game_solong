@@ -6,7 +6,7 @@
 /*   By: eisikogl <eisikogl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 22:36:45 by eisikogl          #+#    #+#             */
-/*   Updated: 2022/07/29 03:39:22 by eisikogl         ###   ########.fr       */
+/*   Updated: 2022/07/29 07:25:18 by eisikogl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,6 @@ void	free_map(char **map);
 
 void	map_validate(t_gamedata *gamedata, int row_size, int column_size);
 void	validate(t_gamedata *gamedata);
+int		check_arg_extension(int argc, char **argv);
 
 #endif
