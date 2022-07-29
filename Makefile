@@ -9,7 +9,6 @@ SRCS	= ./srcs/input_control.c \
 			./srcs/main.c ./srcs/player_movement.c \
 			./srcs/read_map.c ./srcs/render_map.c \
 			./srcs/validate.c \
-			./srcs/bonus.c
 
 OBJS	= $(SRCS:%.c=%.o)
 

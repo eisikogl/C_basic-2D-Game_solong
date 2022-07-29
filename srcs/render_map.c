@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render_map.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eisikogl <eisikogl@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/28 22:38:38 by eisikogl          #+#    #+#             */
+/*   Updated: 2022/07/29 03:51:46 by eisikogl         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/so_long.h"
 
 void	get_object_path(t_gamedata *gamedata)
@@ -17,8 +29,6 @@ void	get_object_path(t_gamedata *gamedata)
 
 void	instantiate_world(t_gamedata *gamedata, int x, int y, char object)
 {
-	// if (object == '0')
-	// 	instantiate_background(gamedata, x, y);
 	if (object == '1')
 		instantiate_wall(gamedata, x, y);
 	if (object == 'P')
@@ -34,12 +44,12 @@ void	instantiate_world(t_gamedata *gamedata, int x, int y, char object)
 
 void	render_map(t_gamedata *gamedata)
 {
-	mlx_clear_window(gamedata->mlx, gamedata->mlx_window);
 	int	i;
 	int	j;
 	int	x;
 	int	y;
 
+	mlx_clear_window(gamedata->mlx, gamedata->mlx_window);
 	i = 0;
 	x = 0;
 	y = 0;
@@ -50,7 +60,6 @@ void	render_map(t_gamedata *gamedata)
 		while (gamedata -> map[i][j])
 		{
 			instantiate_world(gamedata, x, y, gamedata -> map[i][j]);
-			instantiate_world_bonus(gamedata, x, y, gamedata->map[i][j]);
 			x += 64;
 			j++;
 		}

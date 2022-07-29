@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eisikogl <eisikogl@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/28 22:36:45 by eisikogl          #+#    #+#             */
+/*   Updated: 2022/07/29 03:39:22 by eisikogl         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
@@ -72,8 +84,8 @@ void	move_character_down(t_gamedata *gamedata);
 void	move_character_right(t_gamedata *gamedata);
 void	player_movement(t_gamedata *gamedata, int current_x, int current_y);
 
-int		get_line_count(t_gamedata *gamedata);
-int		get_line_size(t_gamedata *gamedata);
+int		l_count(t_gamedata *gamedata);
+int		l_size(t_gamedata *gamedata);
 int		get_file_length(t_gamedata *gamedata);
 void	get_initial_informations(t_gamedata *gamedata);
 void	read_map(t_gamedata *gamedata);
@@ -83,11 +95,7 @@ void	instantiate_world(t_gamedata *gamedata, int x, int y, char object);
 void	render_map(t_gamedata *gamedata);
 void	free_map(char **map);
 
-void	map_validate(t_gamedata *gamedata);
+void	map_validate(t_gamedata *gamedata, int row_size, int column_size);
 void	validate(t_gamedata *gamedata);
-
-void	instantiate_world_bonus(t_gamedata *gamedata, int x, int y, char object);
-void	instantiate_enemy(t_gamedata *gamedata, int x, int y);
-void	instantiate_background(t_gamedata *gamedata, int x, int y);
 
 #endif

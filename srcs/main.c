@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eisikogl <eisikogl@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/28 22:38:28 by eisikogl          #+#    #+#             */
+/*   Updated: 2022/07/29 03:48:51 by eisikogl         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/so_long.h"
 
 void	start_init(t_gamedata *gamedata)
@@ -33,8 +45,8 @@ void	game_init(t_gamedata *gamedata)
 
 	mlx = mlx_init();
 	gamedata->mlx = mlx;
-	gamedata->window_width = 64 * get_line_size(gamedata);
-	gamedata->window_height = 64 * get_line_count(gamedata);
+	gamedata->window_width = 64 * l_size(gamedata);
+	gamedata->window_height = 64 * l_count(gamedata);
 	mlx_window = mlx_new_window(gamedata->mlx, gamedata->window_width, \
 		gamedata->window_height, "Kitten grab`n trapp ");
 	gamedata->mlx_window = mlx_window;
@@ -42,32 +54,29 @@ void	game_init(t_gamedata *gamedata)
 
 int	main(int argc, char **argv)
 {
-	if(argc == 2)
-	{
-		if(!(ft_strnstr(argv[1],".ber")))
-		{
-			perror("invalid Map .ber");
-			return 0;
-		}
-		t_gamedata	*gamedata;
+	t_gamedata	*gamedata;
 
-		gamedata = malloc(sizeof(t_gamedata));
-		if (!gamedata)
-			perror("Error\n");
-		start_init(gamedata);
-		gamedata->map_destination = argv[1];
-		read_map(gamedata);
-		map_validate(gamedata);
-		validate(gamedata);
-		game_init(gamedata);
-		render_map(gamedata);
-		mlx_hook(gamedata->mlx_window, 2, 1L << 0, key_event, gamedata);
-		mlx_hook(gamedata->mlx_window, 17, 1L << 17, exit_game, gamedata);
-		mlx_loop(gamedata->mlx);
-	}
-	else
+	if (argc != 2)
 	{
-		perror("Invalid Arg size");
+		perror("Error\nInvalid Arg size");
+		return (0);
 	}
-	return (0);
+	if (!(ft_strnstr(argv[1], ".ber")))
+	{
+		perror("Error\ninvalid Map .ber");
+		return (0);
+	}
+	gamedata = malloc(sizeof(t_gamedata));
+	if (!gamedata)
+		perror("Error\n");
+	start_init(gamedata);
+	gamedata->map_destination = argv[1];
+	read_map(gamedata);
+	map_validate(gamedata, l_size(gamedata) - 1, l_count(gamedata) - 1);
+	validate(gamedata);
+	game_init(gamedata);
+	render_map(gamedata);
+	mlx_hook(gamedata->mlx_window, 2, 1L << 0, key_event, gamedata);
+	mlx_hook(gamedata->mlx_window, 17, 1L << 17, exit_game, gamedata);
+	mlx_loop(gamedata->mlx);
 }

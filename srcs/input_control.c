@@ -1,17 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input_control.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eisikogl <eisikogl@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/28 22:38:50 by eisikogl          #+#    #+#             */
+/*   Updated: 2022/07/29 03:46:21 by eisikogl         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/so_long.h"
 
-void exit_modes(int exit_mode)
+void	exit_modes(int exit_mode)
 {
 	if (exit_mode == 0)
 		perror("Error\n");
 	if (exit_mode == 1)
 		ft_printf("You left dude come back... ");
 	if (exit_mode == 2)
-		ft_printf("Congcats! You`ve succesfully trapped the Kittens in the Tree");
+		ft_printf("Congcats! Succesfully trapped the Kittens in the Tree");
 	if (exit_mode == 3)
 		ft_printf("Error\nInvalid Map");
 	if (exit_mode == 4)
-		ft_printf("Error\nInvalid Map, Too many or too less Player spawn points");
+		ft_printf("Error\nInvalid Map, Only one Player spawn point allowed");
 	if (exit_mode == 5)
 		ft_printf("Error\nInvalid Map, No Collectibles found");
 	if (exit_mode == 6)
@@ -22,8 +34,6 @@ void exit_modes(int exit_mode)
 		ft_printf("Error\nInvalid Map, Row too short");
 	if (exit_mode == 9)
 		ft_printf("Error\nInvalid Map, Empty row");
-	if (exit_mode == 10)
-		ft_printf("Game Over! You Died! The Dog ate you");
 	if (exit_mode == 11)
 		perror("Error\ninvalid Map .ber");
 }
