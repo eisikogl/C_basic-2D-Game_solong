@@ -6,7 +6,7 @@
 /*   By: eisikogl <eisikogl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 22:38:50 by eisikogl          #+#    #+#             */
-/*   Updated: 2022/07/29 08:16:33 by eisikogl         ###   ########.fr       */
+/*   Updated: 2022/07/29 08:57:42 by eisikogl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,23 @@ void	exit_modes(int exit_mode)
 		ft_printf("Error\ninvalid Map: No Player spawn points");
 	if (exit_mode == 11)
 		perror("Error\ninvalid Map .ber");
+	exit_modes2(exit_mode);
+}
+
+void	exit_modes2(int exit_mode)
+{
+	if (exit_mode == 12)
+		ft_printf("Error\nInvalid Map: Wall not connected First colum\
+		\nxxxxxxx\nooooooo\nooooooo\nooooooo");
+	if (exit_mode == 13)
+		ft_printf("Error\nInvalid Map: Wall not connected Last colum\
+		\nooooooo\nooooooo\nooooooo\nxxxxxxx");
+	if (exit_mode == 14)
+		ft_printf("Error\nInvalid Map: Wall not connected Middle Left\
+		\nxoooooo\nxoooooo\nxoooooo\nxoooooo");
+	if (exit_mode == 15)
+		ft_printf("Error\nInvalid Map: Wall not connected Middle Right\
+		\noooooox\noooooox\noooooox\noooooox");
 }
 
 int	exit_game(t_gamedata *gamedata, int exit_mode)
