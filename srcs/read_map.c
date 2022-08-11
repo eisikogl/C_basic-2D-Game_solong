@@ -6,7 +6,7 @@
 /*   By: eisikogl <eisikogl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 22:39:50 by eisikogl          #+#    #+#             */
-/*   Updated: 2022/07/29 06:36:31 by eisikogl         ###   ########.fr       */
+/*   Updated: 2022/08/11 03:08:48 by eisikogl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void	get_initial_informations(t_gamedata *gamedata)
 		}
 		i++;
 	}
-	ft_printf("Moves: %d \n", gamedata->player_move_count);
 }
 
 void	read_map(t_gamedata *gamedata)

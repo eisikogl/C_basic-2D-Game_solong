@@ -6,7 +6,7 @@
 /*   By: eisikogl <eisikogl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/28 22:38:28 by eisikogl          #+#    #+#             */
-/*   Updated: 2022/07/29 08:16:38 by eisikogl         ###   ########.fr       */
+/*   Updated: 2022/08/11 03:09:02 by eisikogl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	game_init(t_gamedata *gamedata)
 	void	*mlx_window;
 	void	*mlx;
 
+	ft_printf("Moves: %d \n", gamedata->player_move_count);
 	mlx = mlx_init();
 	gamedata->mlx = mlx;
 	gamedata->window_width = 64 * l_size(gamedata);
