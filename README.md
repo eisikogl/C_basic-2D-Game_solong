@@ -1,2 +1,2 @@
 # so_long 42
-You must create a basic 2D game
+C_basic-2D-Game
